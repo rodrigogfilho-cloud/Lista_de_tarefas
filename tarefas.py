@@ -3,17 +3,15 @@ from classe_campo_incluir import Campo_incluir
 
 def main(page:ft.Page):
     page.title = "Armazenamendo de Tarefas"
-    page.bgcolor = "#white"
+    page.bgcolor = "white"
     page.horizontal_alignment = "center"
     page.window.width = 700
     page.window.height = 800
 
-    title = ft.Text(value="Tarefas",
-                    size=30,
-                    font_family="Arial")
+    title = ft.Text(value="Tarefas",size=30,font_family="Arial")
     lista_incluir = []
     def adicionar_campo():
-        lista_incluir.append()
+        lista_incluir.append(campo_tarefas)
 
     def excluir_campo():
         copia_incluir = lista_incluir.copy()
@@ -37,11 +35,9 @@ def main(page:ft.Page):
     button_incluir = ft.Button(content="Incluir",
                                on_click=incluir)
 
-    campo_tarefas = ft.TextField(value=0,
+    campo_tarefas = ft.TextField(value="",
                                  label="Tarefas",
-                                 read_only=True,
-                                 text_align="center",
-                                 on_click=adicionar_campo)
+                                 text_align="center",)
 
     linha_começo = ft.Row(controls=[campo_tarefas, button_incluir],
                           alignment="center",
