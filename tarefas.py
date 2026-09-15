@@ -24,10 +24,11 @@ def main(page:ft.Page):
 
 
     def adicionar_campo():
-        model_tarefa.inserir_tarefa(campo_tarefas.value)
+        cod_tarefa = model_tarefa.inserir_tarefa(campo_tarefas.value)
 
         novo_campo = Campo_incluir(texto_tarefa=campo_tarefas.value,
-                                   funcao_excluir=excluir_campo)
+                                   funcao_excluir=excluir_campo,
+                                   cod_tarefa=cod_tarefa)
         lista_incluir.append(novo_campo)
         
         campo_tarefas.value = ""    
