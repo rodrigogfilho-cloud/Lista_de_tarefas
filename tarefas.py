@@ -1,34 +1,48 @@
 import flet as ft
 from classe_campo_incluir import Campo_incluir
+import sqlite3
+from database.conexao import conectar_bd
+from database.create_database import criar_banco_dados
+from model import model_tarefa
 
 def main(page:ft.Page):
     page.title = "Armazenamendo de Tarefas"
-    page.bgcolor = "#ecdab3"
+    page.bgcolor = "#fad481"
     page.horizontal_alignment = "center"
     page.window.width = 800
     page.window.height = 800
 
-    title = ft.Text(value="Tarefas 📄",size=30,font_family="Arial",)
+    criar_banco_dados()
+
+    title = ft.Text(value="Godoy Tarefas",size=40,font_family="Arial",)
     lista_incluir = []
+
+
+    def excluir_campo(campo_tarefa):
+        lista_incluir.remove(campo_tarefa)
+
+
     def adicionar_campo():
-        novo_campo = Campo_incluir()
+        model_tarefa.inserir_tarefa(campo_tarefas.value)
+
+        novo_campo = Campo_incluir(texto_tarefa=campo_tarefas.value,
+                                   funcao_excluir=excluir_campo)
         lista_incluir.append(novo_campo)
+        
+        campo_tarefas.value = ""    
 
-        page.controls.insert(-1, novo_campo)
-
-    def excluir_campo():
-        copia_incluir = lista_incluir.copy()
-        for campo in copia_incluir:
-            if campo.caixa_selecao.value == True:
-                lista_incluir.remove(campo)
-
+    #Recuperando as tarefas do banco de dados e montando os componentes
+    tarefas_vindas_do_banco_de_dados = model_tarefa.recuperar_tarefas()
+    for tarefa in tarefas_vindas_do_banco_de_dados:
+        novo_campo = Campo_incluir(texto_tarefa=tarefa["status"],
+                                   funcao_excluir=excluir_campo)
+        lista_incluir.append(novo_campo)
 
 
     button_excluir = ft.FloatingActionButton(icon=ft.Icon(ft.Icons.DELETE_FOREVER,
                                                           color="#000"),
                                                           bgcolor="#fff",
-                                                          hover_color="#babaca",
-                                                          on_click=excluir_campo)
+                                                          hover_color="#babaca")
 
     button_incluir = ft.Button(content="Incluir",
                                on_click=adicionar_campo,)
@@ -52,11 +66,14 @@ def main(page:ft.Page):
                              width=550,
                              height=100)
 
+    coluna_tarefas = ft.Column(controls=lista_incluir,
+                               horizontal_alignment="center")
 
 
 
 
-    page.controls = [title,container,button_excluir]
+
+    page.controls = [title,container, coluna_tarefas]
     page.spacing = 45
     page.update()
 
