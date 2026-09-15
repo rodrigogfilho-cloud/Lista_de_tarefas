@@ -1,5 +1,5 @@
 import flet as ft
-from classe_campo_incluir import Campo_incluir
+from component.classe_campo_incluir import Campo_incluir
 import sqlite3
 from database.conexao import conectar_bd
 from database.create_database import criar_banco_dados
@@ -19,6 +19,7 @@ def main(page:ft.Page):
 
 
     def excluir_campo(campo_tarefa):
+        model_tarefa.deletar_tarefa(campo_tarefa.cod_tarefa)
         lista_incluir.remove(campo_tarefa)
 
 
@@ -34,8 +35,9 @@ def main(page:ft.Page):
     #Recuperando as tarefas do banco de dados e montando os componentes
     tarefas_vindas_do_banco_de_dados = model_tarefa.recuperar_tarefas()
     for tarefa in tarefas_vindas_do_banco_de_dados:
-        novo_campo = Campo_incluir(texto_tarefa=tarefa["status"],
-                                   funcao_excluir=excluir_campo)
+        novo_campo = Campo_incluir(texto_tarefa=tarefa["tarefa"],
+                                   funcao_excluir=excluir_campo,
+                                   cod_tarefa=tarefa['cod_tarefa'])
         lista_incluir.append(novo_campo)
 
 

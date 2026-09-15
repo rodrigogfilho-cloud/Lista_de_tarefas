@@ -21,3 +21,15 @@ def recuperar_tarefas():
     conexao.close()
 
     return tarefas
+
+def deletar_tarefa (codigo_tarefa):
+    conexao, cursor = conectar_bd()
+    cursor.execute('''
+                    DELETE FROM tarefas 
+                    WHERE cod_tarefa = 2;
+                    ''',
+                    [codigo_tarefa])
+
+    conexao.commit()
+    conexao.close()
+    
